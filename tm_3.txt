@@ -1,0 +1,49 @@
+states: q0 qFind0 qFind1 qSeek0 qSeek1 qBack qChkRight qaccept qreject
+input_alphabet: 0 1 #
+tape_alphabet: 0 1 # X Y _
+start: q0
+accept: qaccept
+reject: qreject
+transitions:
+q0 X -> q0 X R
+q0 Y -> q0 Y R
+q0 0 -> qFind0 X R
+q0 1 -> qFind1 Y R
+q0 # -> qChkRight # R
+q0 _ -> qreject _ R
+qFind0 0 -> qFind0 0 R
+qFind0 1 -> qFind0 1 R
+qFind0 X -> qFind0 X R
+qFind0 Y -> qFind0 Y R
+qFind0 # -> qSeek0 # R
+qFind0 _ -> qreject _ R
+qFind1 0 -> qFind1 0 R
+qFind1 1 -> qFind1 1 R
+qFind1 X -> qFind1 X R
+qFind1 Y -> qFind1 Y R
+qFind1 # -> qSeek1 # R
+qFind1 _ -> qreject _ R
+qSeek0 X -> qSeek0 X R
+qSeek0 Y -> qSeek0 Y R
+qSeek0 0 -> qBack X L
+qSeek0 1 -> qreject 1 R
+qSeek0 # -> qreject # R
+qSeek0 _ -> qreject _ R
+qSeek1 X -> qSeek1 X R
+qSeek1 Y -> qSeek1 Y R
+qSeek1 1 -> qBack Y L
+qSeek1 0 -> qreject 0 R
+qSeek1 # -> qreject # R
+qSeek1 _ -> qreject _ R
+qBack 0 -> qBack 0 L
+qBack 1 -> qBack 1 L
+qBack X -> qBack X L
+qBack Y -> qBack Y L
+qBack # -> qBack # L
+qBack _ -> q0 _ R
+qChkRight X -> qChkRight X R
+qChkRight Y -> qChkRight Y R
+qChkRight 0 -> qreject 0 R
+qChkRight 1 -> qreject 1 R
+qChkRight # -> qreject # R
+qChkRight _ -> qaccept _ R
