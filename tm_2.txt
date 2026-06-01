@@ -1,9 +1,55 @@
-states: q0 qaccept qreject
-input_alphabet: 1
-tape_alphabet: 1 _
+states: q0 qGoHash0 qGoHash1 qFind0 qFind1 qBack qCheckRight qaccept qreject
+input_alphabet: 0 1 #
+tape_alphabet: 0 1 # X Y _
 start: q0
 accept: qaccept
 reject: qreject
 transitions:
-q0 1 -> q0 1 R
-q0 _ -> qaccept 1 R
+q0 X -> q0 X R
+q0 Y -> q0 Y R
+q0 0 -> qGoHash0 X R
+q0 1 -> qGoHash1 Y R
+q0 # -> qCheckRight # R
+q0 _ -> qreject _ R
+
+qGoHash0 0 -> qGoHash0 0 R
+qGoHash0 1 -> qGoHash0 1 R
+qGoHash0 X -> qGoHash0 X R
+qGoHash0 Y -> qGoHash0 Y R
+qGoHash0 # -> qFind0 # R
+qGoHash0 _ -> qreject _ R
+
+qGoHash1 0 -> qGoHash1 0 R
+qGoHash1 1 -> qGoHash1 1 R
+qGoHash1 X -> qGoHash1 X R
+qGoHash1 Y -> qGoHash1 Y R
+qGoHash1 # -> qFind1 # R
+qGoHash1 _ -> qreject _ R
+
+qFind0 X -> qFind0 X R
+qFind0 Y -> qFind0 Y R
+qFind0 0 -> qBack X L
+qFind0 1 -> qreject 1 R
+qFind0 # -> qreject # R
+qFind0 _ -> qreject _ R
+
+qFind1 X -> qFind1 X R
+qFind1 Y -> qFind1 Y R
+qFind1 1 -> qBack Y L
+qFind1 0 -> qreject 0 R
+qFind1 # -> qreject # R
+qFind1 _ -> qreject _ R
+
+qBack 0 -> qBack 0 L
+qBack 1 -> qBack 1 L
+qBack X -> qBack X L
+qBack Y -> qBack Y L
+qBack # -> qBack # L
+qBack _ -> q0 _ R
+
+qCheckRight X -> qCheckRight X R
+qCheckRight Y -> qCheckRight Y R
+qCheckRight 0 -> qreject 0 R
+qCheckRight 1 -> qreject 1 R
+qCheckRight # -> qreject # R
+qCheckRight _ -> qaccept _ R
